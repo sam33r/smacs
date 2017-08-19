@@ -19,9 +19,6 @@
 (require 'diminish)
 (require 'bind-key)
 
-;; TODO: Move to private.
-(require 'google)
-
 ;;;; Some Sane defaults.
 (setq delete-old-versions -1 )          ; delete excess backup versions silently
 (setq version-control t )               ; use version control
@@ -47,7 +44,8 @@
   :init (evil-mode 1))
 
 (use-package evil-magit
-  :defer t)
+  :defer t
+    :init (require 'evil-magit))
 
 
 ;;;;; General for spacemacs-like leader shortcuts.
@@ -95,9 +93,11 @@
               ("C-'" . ivy-avy)
               ("C-j" . ivy-next-line)
               ("C-k" . ivy-previous-line)
+              ("C-d" . ivy-scroll-down-command)
+              ("C-u" . ivy-scroll-up-command)
               )
   :config
-  (setq ivy-use-virtual-buffers t)   ; extend searching to bookmarks and …
+  (setq ivy-use-virtual-buffers t)   ; extend searching to bookmarks and recent
   (setq ivy-height 20)               ; set height of the ivy window
   (setq ivy-count-format "(%d/%d) ") ; count format, from the ivy help page
   )
