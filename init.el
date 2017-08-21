@@ -32,7 +32,7 @@
 (setq coding-system-for-write 'utf-8 )
 (setq sentence-end-double-space nil)    ; sentence SHOULD end with only a point.
 (setq default-fill-column 80)           ; toggle wrapping text at the 80th character
-(setq initial-scratch-message "Welcome to Emacs") ; print a default message in the empty scratch buffer opened at startup
+(setq initial-scratch-message "Welcome to smacs") ; print a default message in the empty scratch buffer opened at startup
 (setq use-package-always-ensure t)      ; Always install packages.
 
 
@@ -47,6 +47,7 @@
   :defer t
     :init (require 'evil-magit))
 
+;; TODO: More packages from https://www.emacswiki.org/emacs/Evil
 
 ;;;;; General for spacemacs-like leader shortcuts.
 (use-package general
@@ -72,6 +73,9 @@
    ;; Git
    "g"  '(:ignore t :which-key "Git")
    "gs" '(magit-status :which-key "git status")
+
+   ;; Quick switch buffer
+   "TAB" '(smacs/switch-to-other-buffer :which-key "Switch buffer")
    )
 )
 
@@ -214,6 +218,22 @@
   (interactive)
   (find-file user-init-file))
 
+;;;; Load all elisp files within a directory.
+(defun smacs/load-directory (dir)
+  (let ((load-it (lambda (f)
+                   (load-file (concat (file-name-as-directory dir) f)))
+                 ))
+    (mapc load-it (directory-files dir nil "\\.el$"))))
+
+;;;; Switch to other buffer.
+(defun smacs/switch-to-other-buffer ()
+  "Switch to the last invisible buffer"
+  (interactive)
+  (switch-to-buffer (other-buffer)))
 
 ;;; Setup environment.
 (load-theme 'doom-one)
+
+
+;;; Load local config.
+(smacs/load-directory "~/.emacs.d/private/")
