@@ -38,12 +38,20 @@
 
 ;;;; Install packages
 
+;;;;; Quelpa to load packages from git repos.
+(use-package quelpa
+  :ensure t)
+(use-package quelpa-use-package
+  :ensure t)
+
 ;;;;; Evil and associated packages for vim bindings.
 
 (use-package evil
+  :quelpa (evil :fetcher github :repo "emacs-evil/evil")
   :init (evil-mode 1))
 
 (use-package evil-magit
+  :quelpa (evil-magit :fetcher github :repo "emacs-evil/evil-magit")
   :defer t
     :init (require 'evil-magit))
 
@@ -51,6 +59,7 @@
 
 ;;;;; General for spacemacs-like leader shortcuts.
 (use-package general
+  :quelpa (general :fetcher github :repo "noctuid/general.el")
   :config
   (general-evil-setup t)
 
@@ -81,6 +90,7 @@
 
 ;;;;; which-key to remember keybindings.
 (use-package which-key
+  :quelpa (which-key :fetcher github :repo "justbur/emacs-which-key")
   :init (which-key-mode)
   :config
   (which-key-setup-side-window-right-bottom)
