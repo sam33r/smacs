@@ -78,10 +78,18 @@
    "fr"  '(counsel-recentf)
    "fg"  '(counsel-git)
    "f."  '(smacs/edit-init-file)
+   ;; for spacemacs muscle memory.
+   "fed" '(smacs/edit-init-file)
 
    ;; Git
    "g"  '(:ignore t :which-key "Git")
    "gs" '(magit-status :which-key "git status")
+
+   ;; Projectile
+   "p"  '(:ignore t :which-key "Project")
+   "pp" '(counsel-projectile-switch-project)
+   "pf" '(counsel-projectile-find-file)
+   "p/" '(counsel-projectile-ag)
 
    ;; Quick switch buffer
    "TAB" '(smacs/switch-to-other-buffer :which-key "Switch buffer")
@@ -126,6 +134,7 @@
    ("C-c /"   . counsel-ag)        ; search for regexp in git repo using ag
    ("C-c l"   . counsel-locate))   ; search for files or else using locate
   )
+
 
 
 ;;;;; Company for auto-complete.
@@ -182,6 +191,21 @@
   (add-hook 'outline-minor-mode-hook 'outshine-hook-function)
   (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode))
 
+;;;;; Projectile for project management.
+(use-package projectile
+  :quelpa (projectile :fetcher github :repo "bbatsov/projectile")
+  :ensure    t
+  :config    (projectile-global-mode)
+  :diminish   projectile-mode)
+
+;; Counsel-Projectile integration.
+(use-package counsel-projectile
+  :quelpa (counsel-projectile :fetcher github :repo "ericdanan/counsel-projectile")
+  :ensure t
+  :config
+  (counsel-projectile-on))
+;;;; Custom-set variables
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -189,7 +213,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("f89b15728948b1ea5757a09c3fe56882c2478844062e1033a29ffbd2ed0e0275" "12e2aee98f651031d10fd58af76250fa8cab6f28b3e88f03b88b7524c9278549" default)))
+    ("9f569b5e066dd6ca90b3578ff46659bc09a8764e81adf6265626d7dc0fac2a64" "f89b15728948b1ea5757a09c3fe56882c2478844062e1033a29ffbd2ed0e0275" "12e2aee98f651031d10fd58af76250fa8cab6f28b3e88f03b88b7524c9278549" default)))
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
@@ -219,6 +243,12 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
+;;;; i3 integration - todo this doesn't work. maybe try frames-only-mode instead.
+(use-package i3-integration
+  :if window-system
+  :quelpa (i3-integration :fetcher github :repo "vava/i3-emacs")
+  :config
+  (i3-one-window-per-frame-mode-on))
 
 ;;; Custom Functions
 
@@ -247,3 +277,8 @@
 
 ;;; Load local config.
 (smacs/load-directory "~/.emacs.d/private/")
+
+
+;;; Things to add next
+
+;;;; mu4e support.
