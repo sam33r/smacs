@@ -4,4 +4,5 @@ elpa/**
 eshell/**
 network-security.data
 private/**
-recentf/**
+recentf
+quelpa/**
