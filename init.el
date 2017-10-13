@@ -271,6 +271,46 @@
   (interactive)
   (switch-to-buffer (other-buffer)))
 
+
+;;;; Shell integration
+
+(defun smacs/shell-insert (command)
+  "Run a shell command and insert output"
+  (interactive "sCommand to run: ")
+  (insert (shell-command-to-string command)))
+
+(defun smacs/shell-on-range-insert (command)
+  "Run a shell command and insert output"
+  (interactive "sCommand to run (prefixes any selected text): ")
+  (insert (shell-command-to-string
+           (concat command " " (buffer-substring (region-beginning) (region-end))))))
+
+(defun smacs/howdoi (command)
+  "Run howdoi with user-input text"
+  (interactive "sQuery: ")
+  (setq smacs-file-extension (file-name-extension (buffer-file-name)))
+  (setq smacs-lang "")
+  (if (string-equal smacs-file-extension "js") (setq smacs-lang "javascript"))
+  (if (string-equal smacs-file-extension "go") (setq smacs-lang "golang"))
+  (if (string-equal smacs-file-extension "sh") (setq smacs-lang "bash"))
+  (if (string-equal smacs-file-extension "py") (setq smacs-lang "python"))
+  (if (string-equal smacs-file-extension "h") (setq smacs-lang "c++"))
+  (if (string-equal smacs-file-extension "cc") (setq smacs-lang "c++"))
+  (insert (shell-command-to-string (concat "~/pyenv/bin/howdoi -n 3 " smacs-lang " " command)))
+  )
+
+(defun smacs/local-shell-command (command)
+  """Run command in local machine's shell. Useful when using tramp."""
+  (let ((default-directory "~"))
+    (shell-command command))
+  )
+
+(defun smacs/try-local-shell-command (command)
+  """Run command in local machine's shell."""
+  (interactive "sCommand: ")
+  (smacs/local-shell-command command)
+  )
+
 ;;; Setup environment.
 (load-theme 'doom-one)
 
